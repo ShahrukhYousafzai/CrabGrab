@@ -80,26 +80,6 @@
         #gameContainer canvas {
             position: absolute;
         }
-
-        #credit-text {
-            position: fixed;
-            /* Ensures it stays at the bottom regardless of screen size */
-            bottom: 2vh;
-            /* Always 2% of the viewport height from the bottom */
-            left: 50%;
-            /* Center it horizontally */
-            transform: translateX(-50%);
-            /* Adjusts for perfect centering */
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            font-family: Arial, sans-serif;
-            padding-bottom: 5px;
-            width: 100%;
-            max-width: 400px;
-            /* Prevents stretching on larger screens */
-            transition: opacity 0.5s ease-out;
-        }
     </style>
 
 <script>window.SimpleSpectrum={};window.AudioContext=(function(){var q=window.AudioContext||window.webkitAudioContext;return function(){var ac=new q();window.SimpleSpectrum.ac=ac;window.SimpleSpectrum.a=ac.createAnalyser();window.SimpleSpectrum.a.smoothingTimeConstant=0;window.SimpleSpectrum.fa=new Uint8Array(window.SimpleSpectrum.a.frequencyBinCount);window.SimpleSpectrum.la=new Uint8Array(window.SimpleSpectrum.a.fftSize);window.SimpleSpectrum.a.connect(ac.destination);ac.actualDestination=ac.destination;Object.defineProperty(ac,'destination',{value:window.SimpleSpectrum.a,writable:false});return ac;}})();</script>
@@ -120,19 +100,18 @@
     <div id="gameContainer">
         <canvas id="unity-canvas"></canvas>
 
-        <script src="Build/dc27bff7fab7e48a5716dc5374054e98.loader.js"></script>
+        <script src="Build/1244de304532d51662e961feb78b78f2.loader.js"></script>
         <script>
             var canvas = document.querySelector("#unity-canvas");
-            var creditText = document.querySelector("#credit-text");
             var progressBar = document.querySelector("#progress-bar");
             var progressText = document.querySelector("#progress-text");
             var loadingContainer = document.querySelector("#loading-container");
             var nethereumUnityInstance = null;
 
             var config = {
-                dataUrl: "Build/c641fd2adb78742697f6a5335db60412.data",
+                dataUrl: "Build/871698289142ef18a39a3c2eff4bd2a0.data",
                 frameworkUrl: "Build/f562b01a416debb99d86b071d567a7d1.framework.js",
-                codeUrl: "Build/3d9c8c9702ca8547a0c85d180caffe2e.wasm",
+                codeUrl: "Build/97a0b4d287d3bb474c4f1f0097376b1c.wasm",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "MJH Productions",
                 productName: "CrabGrab",
@@ -144,7 +123,6 @@
                 progressBar.style.width = percent;
                 progressText.innerText = percent;
 
-                creditText.style.opacity = 1 - progress;
             }
 
             function onResize() {
@@ -192,17 +170,7 @@
                 loadingContainer.style.display = "none";
             });
 
-            window.addEventListener('resize', onResize);
-            onResize();
 
-            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                const meta = document.createElement('meta');
-                meta.name = 'viewport';
-                meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-                document.getElementsByTagName('head')[0].appendChild(meta);
-            }
-
-            document.querySelector('#canvas-container').requestFullscreen();
         </script>
     </div>
 
