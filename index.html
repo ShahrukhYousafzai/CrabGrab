@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <title>CrabGrab</title>
+
     <style>
         html, body {
             background: #000;
@@ -14,10 +15,6 @@
             overflow: hidden;
             padding: 0;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
         }
 
         #loading-container {
@@ -43,8 +40,6 @@
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
             position: relative;
         }
 
@@ -53,7 +48,6 @@
             height: 100%;
             background: linear-gradient(to right, #005755, #039567);
             transition: width 0.3s ease;
-            border-radius: 10px;
             position: absolute;
         }
 
@@ -67,22 +61,35 @@
             z-index: 1;
         }
 
-        #gameContainer {
-            background: transparent !important;
+        /* FULLY RESPONSIVE CANVAS */
+        #gameContainer, #unity-canvas {
             position: absolute;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #gameContainer canvas {
-            position: absolute;
+            top: 0;
+            left: 0;
         }
     </style>
 
-<script>window.SimpleSpectrum={};window.AudioContext=(function(){var q=window.AudioContext||window.webkitAudioContext;return function(){var ac=new q();window.SimpleSpectrum.ac=ac;window.SimpleSpectrum.a=ac.createAnalyser();window.SimpleSpectrum.a.smoothingTimeConstant=0;window.SimpleSpectrum.fa=new Uint8Array(window.SimpleSpectrum.a.frequencyBinCount);window.SimpleSpectrum.la=new Uint8Array(window.SimpleSpectrum.a.fftSize);window.SimpleSpectrum.a.connect(ac.destination);ac.actualDestination=ac.destination;Object.defineProperty(ac,'destination',{value:window.SimpleSpectrum.a,writable:false});return ac;}})();</script>
+<script>
+window.SimpleSpectrum={};
+window.AudioContext=(function(){
+    var q=window.AudioContext||window.webkitAudioContext;
+    return function(){
+        var ac=new q();
+        window.SimpleSpectrum.ac=ac;
+        window.SimpleSpectrum.a=ac.createAnalyser();
+        window.SimpleSpectrum.a.smoothingTimeConstant=0;
+        window.SimpleSpectrum.fa=new Uint8Array(window.SimpleSpectrum.a.frequencyBinCount);
+        window.SimpleSpectrum.la=new Uint8Array(window.SimpleSpectrum.a.fftSize);
+        window.SimpleSpectrum.a.connect(ac.destination);
+        ac.actualDestination=ac.destination;
+        Object.defineProperty(ac,'destination',{value:window.SimpleSpectrum.a,writable:false});
+        return ac;
+    };
+})();
+</script>
+
 </head>
 
 <body>
@@ -100,7 +107,7 @@
     <div id="gameContainer">
         <canvas id="unity-canvas"></canvas>
 
-        <script src="Build/1ee73b8b4f54d4c65567676eed45101f.loader.js"></script>
+        <script src="Build/fb78ac5668c72ea7e62ad0aaa8e73e91.loader.js"></script>
         <script>
             var canvas = document.querySelector("#unity-canvas");
             var progressBar = document.querySelector("#progress-bar");
@@ -109,9 +116,9 @@
             var nethereumUnityInstance = null;
 
             var config = {
-                dataUrl: "Build/ca04be56693ffc2c5586e90ea1e9060c.data",
-                frameworkUrl: "Build/44ccdd0175087ac0375120b532fa6865.framework.js",
-                codeUrl: "Build/980982b43801d14e79f8061f9ef95008.wasm",
+                dataUrl: "Build/72f2daf4e50e45880956c97747e593b5.data",
+                frameworkUrl: "Build/d06307906cccc59b9b638e640814a4ea.framework.js",
+                codeUrl: "Build/9b592a18b9272b7124393371c919b401.wasm",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "MJH Productions",
                 productName: "CrabGrab",
@@ -122,58 +129,26 @@
                 var percent = Math.round(progress * 100) + '%';
                 progressBar.style.width = percent;
                 progressText.innerText = percent;
-
             }
 
+            // Full responsive scaling
             function onResize() {
-                var container = canvas.parentElement;
-                var w, h;
-
-                var scaleToFit = true;
-                if (scaleToFit) {
-                    w = window.innerWidth;
-                    h = window.innerHeight;
-                    var r = 600 / 960;
-
-                    if (w * r > window.innerHeight) {
-                        w = Math.min(w, Math.ceil(h / r));
-                    }
-                    h = Math.floor(w * r);
-                } else {
-                    w = 960;
-                    h = 600;
-                }
-
-                container.style.width = canvas.style.width = w + "px";
-                container.style.height = canvas.style.height = h + "px";
-               
-                
-                // Fix centering issue by using flexbox
-                container.style.display = "flex";
-                container.style.justifyContent = "center";
-                container.style.alignItems = "center";
-
-                // Ensure Unity does not override positioning
-    canvas.style.position = "absolute";
-    canvas.style.top = "50%";
-    canvas.style.left = "50%";
-    canvas.style.transform = "translate(-50%, -50%)";
+                canvas.style.width = "100%";
+                canvas.style.height = "100%";
             }
+
+            window.addEventListener("resize", onResize);
 
             createUnityInstance(canvas, config, progressHandler).then(function(instance) {
                 nethereumUnityInstance = instance;
+
                 canvas = instance.Module.canvas;
-                
-    // Re-apply centering after Unity initializes
-    setTimeout(onResize, 100);
-    
+
+                onResize(); // apply after unity loads
                 loadingContainer.style.display = "none";
             });
-
-
         </script>
     </div>
 
 </body>
-
 </html>
