@@ -107,7 +107,7 @@ window.AudioContext=(function(){
     <div id="gameContainer">
         <canvas id="unity-canvas"></canvas>
 
-        <script src="Build/9c6a61ec06182a7ec78aabe319de6f0a.loader.js"></script>
+        <script src="Build/CrabGrab.loader.js"></script>
         <script>
             var canvas = document.querySelector("#unity-canvas");
             var progressBar = document.querySelector("#progress-bar");
@@ -116,9 +116,9 @@ window.AudioContext=(function(){
             var nethereumUnityInstance = null;
 
             var config = {
-                dataUrl: "Build/dda6d33ebc341c3ecbc9fd893b8c0ead.data",
-                frameworkUrl: "Build/acc6eb8e0cf478fc7a8094425399f897.framework.js",
-                codeUrl: "Build/5de0ad071bdafd955fdaab064330085b.wasm",
+                dataUrl: "Build/CrabGrab.data",
+                frameworkUrl: "Build/CrabGrab.framework.js",
+                codeUrl: "Build/CrabGrab.wasm",
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "MJH Productions",
                 productName: "CrabGrab",
@@ -146,6 +146,11 @@ window.AudioContext=(function(){
 
                 onResize(); // apply after unity loads
                 loadingContainer.style.display = "none";
+            }).catch(function(message) {
+                // Always hide the loading overlay — even on error — so the screen
+                // doesn't get permanently stuck at 90% or 100% after a failed reload.
+                loadingContainer.style.display = "none";
+                console.error("Unity failed to load: " + message);
             });
         </script>
     </div>
